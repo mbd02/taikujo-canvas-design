@@ -3,6 +3,8 @@
 **[Open the live playground](https://mbd02.github.io/taikujo-canvas-design/)**
 
 A standalone design draft with dummy elements and one shared indicator pill.
+Original app SVG outlines and starting dimensions, including the task contour,
+rounded decision, capsule event, tunnel arch, flat Desk ribbon and square files.
 Five material themes, light/dark mode, DE/EN, zoom, movable cards and editable
 pill spacing/actions. Export/import JSON to share a design configuration.
 
