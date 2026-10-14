@@ -3,7 +3,8 @@
 **[Open the live playground](https://mbd02.github.io/taikujo-canvas-design/)**
 
 A standalone design draft with dummy elements, a separate top-right comment
-chat pill on every card and a lower pill for the remaining actions.
+chat pill on every card, a mirrored top-left preview pill on files/stacks/Tunnels,
+and a lower pill for the remaining actions. Corner controls stay separate at low zoom.
 Original app SVG outlines, including the task contour, rounded decision,
 capsule event, flat Desk ribbon and square files. Proposed Tunnel shape: a true
 semicircular arch over straight walls and a flat base; no fake depth yet. Files/covers are
