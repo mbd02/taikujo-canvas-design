@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="de" data-skin="clay" data-theme="dark" data-preview-revision="e2462878d1f8">
+<html lang="de" data-skin="clay" data-theme="dark" data-preview-revision="39889fb887d3">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -343,6 +343,9 @@ main{display:grid;grid-template-columns:minmax(0,1fr) 300px;min-height:calc(100d
 .node[data-kind="tunnel"]:has(.surface:hover) .tunnel-hover,.node[data-kind="tunnel"]:focus-visible .tunnel-hover{opacity:1}
 .inspector-tabs{display:flex;gap:6px;margin:0 0 12px}.inspector-tabs button{flex:1}.tunnel-content{display:grid;gap:5px}.tunnel-content button{display:flex;align-items:center;gap:9px;text-align:left;min-height:38px}.tunnel-content .file-caption{font-size:var(--type-caption-size);color:var(--muted)}.tunnel-content .content-preview{padding:12px;border:1px solid var(--border-strong);border-radius:0;white-space:pre-wrap}.tunnel-editor-help{font-size:var(--type-caption-size);color:var(--muted)}
 .node[data-kind="desk"] .surface{padding-right:22px}
+.unreachable-overlay{position:absolute;inset:0;width:100%;height:100%;z-index:4;pointer-events:none;overflow:visible}
+.unreachable-overlay path,.unreachable-overlay rect{fill:light-dark(rgb(245 245 245 / .55),rgb(225 225 232 / .55));stroke:none}
+.unreachable-mark{position:absolute;left:50%;top:50%;width:42px;height:38px;transform:translate(-50%,-50%);z-index:5;pointer-events:none;fill:#7b2029}
 .title{font-size:var(--title-size);line-height:1.22;font-weight:600;text-align:center;letter-spacing:var(--tracking);overflow:hidden;overflow-wrap:anywhere;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:var(--title-lines);max-width:100%}
 .node[data-kind="file"] .surface,.node[data-kind="stack"] .surface{border-radius:0;padding:0;display:flex;flex-direction:column;overflow:hidden}.thumbnail{width:100%;flex:1;min-height:0;display:flex;align-items:center;justify-content:center;background:var(--panel-2)}.thumbnail svg{width:100%;height:100%;object-fit:contain}.file-title{width:100%;height:30px;flex:none;padding:3px 12px;background:transparent}.file-title .title{font-size:14px;-webkit-line-clamp:2}
 /* Actual stack arrangement: square covers offset horizontally/vertically, not rotated. */
@@ -356,7 +359,7 @@ main{display:grid;grid-template-columns:minmax(0,1fr) 300px;min-height:calc(100d
 
 .pill-anchor{position:absolute;left:50%;top:calc(100% + var(--pill-offset));transform:translateX(-50%) scale(var(--pill-scale));transform-origin:50% 0;z-index:3;cursor:default;max-width:none}
 .pill{display:flex;align-items:center;gap:var(--pill-gap);padding:var(--pill-padding);border:1px solid var(--border-soft);border-radius:var(--pill-radius);background:var(--panel);box-shadow:var(--shadow-menu);white-space:nowrap;min-height:32px}
-.pill button{position:relative;display:flex;align-items:center;justify-content:center;gap:6px;min-width:30px;height:30px;padding:4px 7px;border:0;background:transparent;border-radius:var(--radius-sm);color:var(--muted)}.pill button:hover{background:var(--panel-2);color:var(--text)}.pill svg{width:var(--icon-size);height:var(--icon-size);flex:none}.pill .status{color:var(--ink-warning)}.pill .status.done{color:var(--ink-success)}.pill .preview{color:var(--accent)}
+.pill button{position:relative;display:flex;align-items:center;justify-content:center;gap:6px;min-width:30px;height:30px;padding:4px 7px;border:0;background:transparent;border-radius:var(--radius-sm);color:var(--muted)}.pill button:hover{background:var(--panel-2);color:var(--text)}.pill svg{width:var(--icon-size);height:var(--icon-size);flex:none}.pill .status{color:var(--ink-warning)}.pill .status.done{color:var(--ink-success)}.pill .status.done svg{fill:currentColor}.pill .preview{color:var(--accent)}
 .pill button .tooltip{display:none;position:absolute;bottom:calc(100% + 12px);left:50%;transform:translateX(-50%);background:var(--panel-2);color:var(--text);padding:6px 9px;border:1px solid var(--border-strong);border-radius:var(--radius-sm);box-shadow:var(--shadow-tooltip);pointer-events:none;font-size:14px}
 .pill button:hover .tooltip,.pill button:focus-visible .tooltip{display:block}.node[data-pill-visibility="hover"]:not(:hover):not(.selected):not(:focus-within) .pill-anchor{opacity:0;pointer-events:none}
 :root[data-skin="clay"] .pill{box-shadow:var(--clay-raised)}
@@ -371,17 +374,13 @@ dialog{max-width:min(90vw,700px);width:640px;color:var(--text);background:var(--
 <svg width="0" height="0" aria-hidden="true" style="position:absolute"><defs><linearGradient id="h2a1-node-material" x1="0" y1="0" x2=".35" y2="1"><stop class="material-top" offset="0"/><stop class="material-mid" offset=".46"/><stop class="material-bottom" offset="1"/></linearGradient>
 <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
 <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 4h16v12H9l-5 4V4Z"/><path d="M8 8h8M8 12h5"/></symbol>
-<symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 22v-3a8 8 0 0 1 16 0v3"/></symbol>
 <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V6a4 4 0 0 1 8 0v4"/></symbol>
-<symbol id="i-focus" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/></symbol>
 <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 2v6M17 2v6M3 11h18M7 15h3M14 15h3"/></symbol>
 <symbol id="i-link" viewBox="0 0 24 24"><path d="m9 15 6-6M8 16l-2 2a4 4 0 0 1-6-6l5-5a4 4 0 0 1 6 0M16 8l2-2a4 4 0 0 1 6 6l-5 5a4 4 0 0 1-6 0" transform="translate(2 0) scale(.85)"/></symbol>
-<symbol id="i-check" viewBox="0 0 24 24"><path d="m4 12 5 5L20 5"/></symbol>
+<symbol id="i-status" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/></symbol>
 <symbol id="i-list" viewBox="0 0 24 24"><path d="m3 6 2 2 3-4M11 6h10M3 14h4M11 14h10M3 21h4M11 21h10"/></symbol>
 <symbol id="i-open" viewBox="0 0 24 24"><path d="M14 3h7v7M21 3 10 14M10 3H3v18h18v-7"/></symbol>
 <symbol id="tunnel-provider-icon" viewBox="0 0 24 24"><path d="M12.01 1.485c-2.082 0-3.754.02-3.743.047.01.02 1.708 3.001 3.774 6.62l3.76 6.574h3.76c2.081 0 3.753-.02 3.742-.047-.005-.02-1.708-3.001-3.775-6.62l-3.76-6.574zm-4.76 1.73a789.828 789.861 0 0 0-3.63 6.319L0 15.868l1.89 3.298 1.885 3.297 3.62-6.335 3.618-6.33-1.88-3.287C8.1 4.704 7.255 3.22 7.25 3.214zm2.259 12.653-.203.348c-.114.198-.96 1.672-1.88 3.287a423.93 423.948 0 0 1-1.698 2.97c-.01.026 3.24.042 7.222.042h7.244l1.796-3.157c.992-1.734 1.85-3.23 1.906-3.323l.104-.167h-7.249z"/></symbol>
-<symbol id="i-drive" viewBox="0 0 24 24"><path d="M9 3h6l7 12-3 6H5l-3-6L9 3ZM9 3l10 18M15 3 5 21M2 15h20"/></symbol>
-<symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></symbol>
 <symbol id="picture" viewBox="0 0 400 240"><rect width="400" height="240" fill="#b5c6b7"/><circle cx="304" cy="66" r="27" fill="#eee2b5"/><path d="M0 179 105 75l94 116 73-89 128 113v25H0Z" fill="#688a7e"/><path d="m0 218 128-101 95 123H0Z" fill="#456c64"/><path d="m274 104 35 41-15-3-20-17-16 9Z" fill="#dfebe2"/></symbol>
 </defs></svg>
 <header><strong class="brand">tAIkujo</strong><span class="badge" data-ui="lab"></span><div class="toolbar">
@@ -400,6 +399,8 @@ dialog{max-width:min(90vw,700px);width:640px;color:var(--text);background:var(--
 <div class="checks"><label><input id="constant" type="checkbox"><span data-ui="constant"></span></label></div>
 <h2 data-ui="functions"></h2><p class="muted" data-ui="functionsHint"></p><div class="checks" id="function-controls"></div>
 <h2 data-ui="elements"></h2><div id="card-controls"></div><div class="checks"><label><input id="area" type="checkbox"><span data-ui="area"></span></label></div>
+<h2 data-ui="availability"></h2><label class="control"><span data-ui="tunnelTarget"></span><select id="tunnel-target-status"><option value="available" data-ui="available"></option><option value="unreachable" data-ui="unreachable"></option></select></label>
+<label class="control"><span data-ui="deskTarget"></span><select id="desk-target-status"><option value="available" data-ui="available"></option><option value="unreachable" data-ui="unreachable"></option></select></label>
 <h2 data-ui="selected"></h2><p class="muted" id="selection-hint" data-ui="selectHint"></p><div id="selection-controls" hidden>
 <label class="control"><span data-ui="title"></span><input type="text" id="title" maxlength="160"></label><label class="control"><span data-ui="note"></span><textarea id="note" rows="3" maxlength="2000"></textarea></label>
 <label class="control"><span data-ui="taskState"></span><select id="task-state"><option value="open" data-ui="open"></option><option value="done" data-ui="done"></option></select></label>
@@ -410,9 +411,9 @@ dialog{max-width:min(90vw,700px);width:640px;color:var(--text);background:var(--
 <script>
 'use strict';
 const VERSION=1, PREVIEW_REVISION=document.documentElement.dataset.previewRevision||'local', STORAGE='taikujo.canvas-design-lab.v1.'+PREVIEW_REVISION;
-const copy={account:['Account','Account'],scope:['Scope','Scope'],view:['Ansicht','View'],edit:['Bearbeiten','Edit'],scopeLimit:['Nur innerhalb des am Desk zugewiesenen Umfangs. Dummy-Auswahl für diesen Entwurf.','Only within the scope assigned to the Desk. Dummy selection for this draft.'],dummyFile:['Dummy-Dateiinhalt für die Inspector-Vorschau.','Dummy file content for the Inspector preview.'],back:['Zurück','Back'],
+const copy={availability:['Erreichbarkeit testen','Test availability'],tunnelTarget:['Tunnel-Ziel','Tunnel target'],deskTarget:['Desk-Ziel','Desk target'],available:['Erreichbar','Available'],unreachable:['Ziel nicht erreichbar','Target unavailable'],account:['Account','Account'],scope:['Scope','Scope'],view:['Ansicht','View'],edit:['Bearbeiten','Edit'],scopeLimit:['Nur innerhalb des am Desk zugewiesenen Umfangs. Dummy-Auswahl für diesen Entwurf.','Only within the scope assigned to the Desk. Dummy selection for this draft.'],dummyFile:['Dummy-Dateiinhalt für die Inspector-Vorschau.','Dummy file content for the Inspector preview.'],back:['Zurück','Back'],
 revision:['Stand','Revision'],lab:['Canvas Design Lab · Entwurf','Canvas Design Lab · Draft'],theme:['Theme','Theme'],mode:['Modus','Mode'],dark:['Dunkel','Dark'],light:['Hell','Light'],language:['Sprache','Language'],export:['Design exportieren','Export design'],import:['Importieren','Import'],
-hint:['Element anklicken und verschieben. Rechts die Pill und Karten anpassen. Änderungen bleiben lokal; Export zum Teilen.','Click and drag an element. Adjust the pill and cards on the right. Changes stay local; export to share.'],dummy:['Nur Dummy-Inhalte · keine Verbindung zu echten Desks','Dummy content only · no connection to real Desks'],settings:['Design ausprobieren','Try the design'],local:['Kommentarchat oben rechts, Vorschau bei passenden Elementen oben links. Weitere Funktionen unten.','Comment chat at the top right, preview on supported elements at the top left. Other actions below.'],zoom:['Zoom','Zoom'],pill:['Untere Pill','Lower pill'],visibility:['Sichtbarkeit','Visibility'],always:['Immer sichtbar','Always visible'],hover:['Bei Hover oder Auswahl','On hover or selection'],offset:['Abstand zur Karte','Distance from card'],gap:['Abstand zwischen Funktionen','Spacing between actions'],padding:['Innenabstand','Padding'],iconSize:['Icongröße','Icon size'],radius:['Pill-Form','Pill shape'],themeRadius:['Zum Theme passend','Match theme'],round:['Rund','Round'],square:['Eckig','Square'],constant:['Pill bleibt beim Zoomen gleich groß','Keep pill size constant while zooming'],functions:['Funktionen in der unteren Pill','Lower pill actions'],functionsHint:['Testschalter für den Entwurf; noch keine Entscheidung über den finalen Inhalt.','Draft toggles; the final pill content is still undecided.'],creator:['Ersteller / AI-Änderung','Creator / AI change'],preview:['Vorschau','Preview'],lock:['Inhaltssperre','Content lock'],focus:['Fokus','Focus'],calendar:['Kalender','Calendar'],chat:['Kommentarchat','Comment chat'],links:['Weblinks inkl. RSS/Atom','Web links incl. RSS/Atom'],checklist:['Checklistenfortschritt','Checklist progress'],status:['Aufgabenstatus','Task status'],menu:['Weitere Funktionen','More actions'],elements:['Elemente','Elements'],width:['Kartenbreite','Card width'],height:['Kartenhöhe','Card height'],titleSize:['Titelgröße','Title size'],titleLines:['Titelzeilen','Title lines'],tracking:['Buchstabenabstand','Letter spacing'],area:['Bereich anzeigen','Show area'],selected:['Ausgewähltes Element','Selected element'],selectHint:['Klicke eine Karte an, um ihren Text zu testen.','Click a card to try different text.'],title:['Titel','Title'],note:['Notiz','Note'],taskState:['Aufgabenstatus','Task status'],open:['Offen','Open'],done:['Erledigt','Done'],reset:['Zurücksetzen','Reset'],close:['Schließen','Close'],saved:['Design als JSON exportiert.','Design exported as JSON.'],loaded:['Design importiert.','Design imported.'],invalid:['Diese Datei ist kein gültiger Design-Export.','This file is not a valid design export.'],importError:['Die Datei konnte nicht gelesen werden.','The file could not be read.'],unsaved:['Lokales Speichern nicht verfügbar. Bitte exportieren.','Local storage unavailable. Please export.'],research:['Recherche','Research'],empty:['Keine Notiz vorhanden.','No note yet.'],demoChat:['Alex: Schau dir bitte diese Variante an.\nAI Worker: Hier könnte später die Antwort stehen.','Alex: Please take a look at this version.\nAI Worker: A reply could appear here later.'],demoLinks:['Webseite · Beispiel-Link\nRSS/Atom · Beispiel-Feed mit Artikelliste\n\nIn diesem Entwurf wird nichts extern abgerufen.','Website · Example link\nRSS/Atom · Example feed with an article list\n\nThis draft makes no external requests.'],demoCalendar:['16. Oktober · Review\n18. Oktober · Freigabe','16 October · Review\n18 October · Approval'],demoMenu:['Eigenschaften, Freigaben und weitere Aktionen gestalten wir im nächsten Schritt.','We will design properties, permissions and other actions in the next step.'],desk:['Desk öffnen','Open Desk'],demoDesk:['Ein Desk-Verweis würde den verlinkten Desk öffnen.','A Desk reference would open the linked Desk.'],stack:['Stapel öffnen','Open stack'],demoStack:['Moodboard.png\nBriefing.md\nEntwurf.pdf\nFoto.heic','Moodboard.png\nBriefing.md\nDraft.pdf\nPhoto.heic']
+hint:['Element anklicken und verschieben. Rechts die Pill und Karten anpassen. Änderungen bleiben lokal; Export zum Teilen.','Click and drag an element. Adjust the pill and cards on the right. Changes stay local; export to share.'],dummy:['Nur Dummy-Inhalte · keine Verbindung zu echten Desks','Dummy content only · no connection to real Desks'],settings:['Design ausprobieren','Try the design'],local:['Kommentarchat oben rechts, Vorschau bei passenden Elementen oben links. Status und Inhalte unten.','Comment chat at the top right, preview on supported elements at the top left. Status and content below.'],zoom:['Zoom','Zoom'],pill:['Untere Pill','Lower pill'],visibility:['Sichtbarkeit','Visibility'],always:['Immer sichtbar','Always visible'],hover:['Bei Hover oder Auswahl','On hover or selection'],offset:['Abstand zur Karte','Distance from card'],gap:['Abstand zwischen Funktionen','Spacing between actions'],padding:['Innenabstand','Padding'],iconSize:['Icongröße','Icon size'],radius:['Pill-Form','Pill shape'],themeRadius:['Zum Theme passend','Match theme'],round:['Rund','Round'],square:['Eckig','Square'],constant:['Pill bleibt beim Zoomen gleich groß','Keep pill size constant while zooming'],functions:['Funktionen in der unteren Pill','Lower pill actions'],functionsHint:['Testschalter für den Entwurf; noch keine Entscheidung über den finalen Inhalt.','Draft toggles; the final pill content is still undecided.'],preview:['Vorschau','Preview'],lock:['Inhaltssperre','Content lock'],calendar:['Kalender','Calendar'],chat:['Kommentarchat','Comment chat'],links:['Weblinks inkl. RSS/Atom','Web links incl. RSS/Atom'],checklist:['Checklistenfortschritt','Checklist progress'],status:['Aufgabenstatus','Task status'],elements:['Elemente','Elements'],width:['Kartenbreite','Card width'],height:['Kartenhöhe','Card height'],titleSize:['Titelgröße','Title size'],titleLines:['Titelzeilen','Title lines'],tracking:['Buchstabenabstand','Letter spacing'],area:['Bereich anzeigen','Show area'],selected:['Ausgewähltes Element','Selected element'],selectHint:['Klicke eine Karte an, um ihren Text zu testen.','Click a card to try different text.'],title:['Titel','Title'],note:['Notiz','Note'],taskState:['Aufgabenstatus','Task status'],open:['Offen','Open'],done:['Erledigt','Done'],reset:['Zurücksetzen','Reset'],close:['Schließen','Close'],saved:['Design als JSON exportiert.','Design exported as JSON.'],loaded:['Design importiert.','Design imported.'],invalid:['Diese Datei ist kein gültiger Design-Export.','This file is not a valid design export.'],importError:['Die Datei konnte nicht gelesen werden.','The file could not be read.'],unsaved:['Lokales Speichern nicht verfügbar. Bitte exportieren.','Local storage unavailable. Please export.'],research:['Recherche','Research'],empty:['Keine Notiz vorhanden.','No note yet.'],demoChat:['Alex: Schau dir bitte diese Variante an.\nAI Worker: Hier könnte später die Antwort stehen.','Alex: Please take a look at this version.\nAI Worker: A reply could appear here later.'],demoLinks:['Webseite · Beispiel-Link\nRSS/Atom · Beispiel-Feed mit Artikelliste\n\nIn diesem Entwurf wird nichts extern abgerufen.','Website · Example link\nRSS/Atom · Example feed with an article list\n\nThis draft makes no external requests.'],demoCalendar:['16. Oktober · Review\n18. Oktober · Freigabe','16 October · Review\n18 October · Approval'],desk:['Desk öffnen','Open Desk'],demoDesk:['Ein Desk-Verweis würde den verlinkten Desk öffnen.','A Desk reference would open the linked Desk.'],stack:['Stapel öffnen','Open stack'],demoStack:['Moodboard.png\nBriefing.md\nEntwurf.pdf\nFoto.heic','Moodboard.png\nBriefing.md\nDraft.pdf\nPhoto.heic']
 };
 // Original production geometry, copied from js/shapes.js; no CSS approximations.
 const SHAPE_GEOMETRY = {
@@ -445,19 +446,19 @@ function cardShape(card){
 }
 
 const specs={offset:[-16,24,1,'px'],gap:[0,14,1,'px'],padding:[0,12,1,'px'],iconSize:[14,24,1,'px'],width:[160,320,1,'px'],height:[120,260,1,'px'],titleSize:[14,20,1,'px'],titleLines:[1,5,1,''],tracking:[-.6,.2,.05,'px']};
-const actions=['creator','lock','focus','calendar','links','checklist','status','menu'];
+const actions=['lock','calendar','links','checklist','status'];
 const TUNNEL_SCOPES=['Launch-Team','Launch-Team/Briefing','Launch-Team/Entwürfe'];
 const kinds=['note','task','event','decision','file','stack','tunnel','desk'];
-const icons={creator:'user',preview:'eye',lock:'lock',focus:'focus',calendar:'calendar',chat:'chat',links:'link',checklist:'list',menu:'more',desk:'open'};
-function defaults(){return {version:VERSION,skin:'clay',mode:'dark',language:'de',zoom:100,visibility:'always',radius:'theme',constant:true,area:false,offset:-12,gap:0,padding:3,iconSize:18,width:256,height:159,titleSize:16,titleLines:3,tracking:-.15,actions:['creator','status','menu'],cards:[
+const icons={preview:'eye',lock:'lock',calendar:'calendar',chat:'chat',links:'link',checklist:'list',status:'status',desk:'open'};
+function defaults(){return {version:VERSION,skin:'clay',mode:'dark',language:'de',zoom:100,visibility:'always',radius:'theme',constant:true,area:false,offset:-12,gap:0,padding:3,iconSize:18,width:256,height:159,titleSize:16,titleLines:3,tracking:-.15,actions:['status'],cards:[
 {id:'note',kind:'note',title:'Ideen für den nächsten Launch sammeln',note:'Ein normales Element mit Notiz. Mehr Platz für den Titel, keine Leisten auf der Karte.',x:66,y:98},
 {id:'task',kind:'task',title:'Die erste Variante gemeinsam prüfen',note:'Eine Aufgabe mit unabhängigem Status und Checkliste.',status:'open',x:400,y:98},
 {id:'event',kind:'event',title:'Design Review am Freitag',note:'Ein Event als eigene Form.',x:734,y:98},
 {id:'decision',kind:'decision',title:'Welche Variante nehmen wir?',note:'Eine Entscheidung mit etwas längerem Titel zum Testen.',x:1068,y:98},
 {id:'file',kind:'file',title:'Moodboard.png',note:'Bildkarte mit sparsamer Vorschau und eckigen Kanten.',x:66,y:443},
 {id:'stack',kind:'stack',title:'Launch · 4 Dateien',note:'Gemischte Dateitypen in einem Stapel.',x:400,y:443},
-{id:'tunnel',kind:'tunnel',title:'Google Drive',note:'',account:'Alex',scope:'Launch-Team',x:734,y:443},
-{id:'desk',kind:'desk',title:'Launch Recherche',note:'Verweis auf einen weiteren Desk.',x:1068,y:443}
+{id:'tunnel',kind:'tunnel',title:'Google Drive',note:'',account:'Alex',scope:'Launch-Team',targetStatus:'available',x:734,y:443},
+{id:'desk',kind:'desk',title:'Launch Recherche',note:'Verweis auf einen weiteren Desk.',targetStatus:'available',x:1068,y:443}
 ]};}
 function validate(raw){
  const d=defaults();if(!raw||raw.version!==VERSION||!Array.isArray(raw.cards)||raw.cards.length!==d.cards.length)throw Error('version');
@@ -466,8 +467,9 @@ function validate(raw){
  }
  for(const [key,[min,max]] of Object.entries({...specs,zoom:[1,100]})){if(typeof raw[key]!=='number'||!Number.isFinite(raw[key])||raw[key]<min||raw[key]>max)throw Error(key);d[key]=raw[key];}
  for(const key of ['constant','area']){if(typeof raw[key]!=='boolean')throw Error(key);d[key]=raw[key];}
- if(!Array.isArray(raw.actions)||raw.actions.length>actions.length+2||new Set(raw.actions).size!==raw.actions.length||raw.actions.some(key=>!actions.includes(key)&&!['chat','preview'].includes(key)))throw Error('actions');d.actions=raw.actions.filter(key=>!['chat','preview'].includes(key));
- d.cards=d.cards.map((base,index)=>{const c=raw.cards[index];if(!c||c.id!==base.id||c.kind!==base.kind||!kinds.includes(c.kind)||typeof c.title!=='string'||c.title.length>160||typeof c.note!=='string'||c.note.length>2000)throw Error('card');for(const key of ['x','y'])if(!Number.isFinite(c[key])||c[key]<0||c[key]>1400)throw Error(key);if(base.kind==='task'&&!['open','done'].includes(c.status))throw Error('status');if(base.kind==='tunnel'&&((c.account!==undefined&&(typeof c.account!=='string'||c.account.length>120))||(c.scope!==undefined&&!TUNNEL_SCOPES.includes(c.scope))))throw Error('tunnel');return {...base,title:c.title,note:c.note,x:c.x,y:c.y,...(base.kind==='task'?{status:c.status}:{}),...(base.kind==='tunnel'?{account:c.account??base.account,scope:c.scope??base.scope}:{})};});return d;
+ // Older design exports may contain retired action names. Never render unknown actions.
+ if(!Array.isArray(raw.actions)||raw.actions.length>20||new Set(raw.actions).size!==raw.actions.length||raw.actions.some(key=>typeof key!=='string'||key.length>32))throw Error('actions');d.actions=raw.actions.filter(key=>actions.includes(key));
+ d.cards=d.cards.map((base,index)=>{const c=raw.cards[index];if(!c||c.id!==base.id||c.kind!==base.kind||!kinds.includes(c.kind)||typeof c.title!=='string'||c.title.length>160||typeof c.note!=='string'||c.note.length>2000)throw Error('card');for(const key of ['x','y'])if(!Number.isFinite(c[key])||c[key]<0||c[key]>1400)throw Error(key);if(base.kind==='task'&&!['open','done'].includes(c.status))throw Error('status');if(['tunnel','desk'].includes(base.kind)&&c.targetStatus!==undefined&&!['available','unreachable'].includes(c.targetStatus))throw Error('availability');if(base.kind==='tunnel'&&((c.account!==undefined&&(typeof c.account!=='string'||c.account.length>120))||(c.scope!==undefined&&!TUNNEL_SCOPES.includes(c.scope))))throw Error('tunnel');return {...base,title:c.title,note:c.note,x:c.x,y:c.y,...(base.kind==='task'?{status:c.status}:{}),...(['tunnel','desk'].includes(base.kind)?{targetStatus:c.targetStatus??'available'}:{}),...(base.kind==='tunnel'?{account:c.account??base.account,scope:c.scope??base.scope}:{})};});return d;
 }
 let state=defaults(),selected=null,tunnelTab='view',tunnelFolder=null,storageAvailable=true;
 try{const stored=localStorage.getItem(STORAGE);if(stored)state=validate(JSON.parse(stored));}catch{storageAvailable=false;}
@@ -486,6 +488,7 @@ function apply(){
  for(const key of ['skin','mode','language','radius','visibility','zoom'])$(key).value=state[key];
  for(const key of ['constant','area'])$(key).checked=state[key];
  for(const key of actions)$('action-'+key).checked=state.actions.includes(key);
+ for(const kind of ['tunnel','desk'])$(kind+'-target-status').value=state.cards.find(card=>card.kind===kind).targetStatus;
  for(const [key,[,,,unit]] of Object.entries(specs)){$(key).value=state[key];$(key+'-value').textContent=state[key]+unit;}
  const camera=.35+(state.zoom-1)/99*.4;
  const css={'--card-width':state.width+'px','--card-height':state.height+'px','--card-radius':'var(--radius-lg)','--title-size':state.titleSize+'px','--title-lines':state.titleLines,'--tracking':state.tracking+'px','--pill-offset':state.offset+'px','--pill-gap':state.gap+'px','--pill-padding':state.padding+'px','--icon-size':state.iconSize+'px','--pill-radius':state.radius==='round'?'999px':state.radius==='square'?'0px':state.skin==='office'?'0px':state.skin==='clay'?'var(--radius-lg)':'var(--radius-control)','--pill-scale':state.constant?1/camera:1};
@@ -533,13 +536,20 @@ function renderCards(){
    const hover=document.createElement('div');hover.className='tunnel-hover';hover.setAttribute('role','tooltip');hover.id='tunnel-hover-'+card.id;
    for(const [label,value] of [[t('account'),card.account],[t('scope'),card.scope]]){const row=document.createElement('span');row.textContent=label+': '+value;hover.append(row);}node.setAttribute('aria-describedby',hover.id);node.append(hover);
   }else surface.append(title);
-  node.append(surface);const anchor=document.createElement('div');anchor.className='pill-anchor';const pill=document.createElement('div');pill.className='pill';pill.setAttribute('aria-label',t('pill'));
+  node.append(surface);
+  if(['tunnel','desk'].includes(card.kind)&&card.targetStatus==='unreachable'){
+   node.dataset.targetStatus='unreachable';
+   const shape=node.querySelector('.node-shape');const overlay=document.createElementNS('http://www.w3.org/2000/svg','svg');overlay.classList.add('unreachable-overlay');overlay.setAttribute('viewBox',shape.getAttribute('viewBox'));overlay.setAttribute('preserveAspectRatio',shape.getAttribute('preserveAspectRatio'));overlay.setAttribute('aria-hidden','true');overlay.innerHTML=shape.firstElementChild.outerHTML;
+   const warning=document.createElementNS('http://www.w3.org/2000/svg','svg');warning.classList.add('unreachable-mark');warning.setAttribute('viewBox','0 0 48 44');warning.setAttribute('role','img');warning.setAttribute('aria-label',t('unreachable'));warning.innerHTML='<path d="M24 2 47 42H1Z"/>';
+   node.append(overlay,warning);
+  }
+  const anchor=document.createElement('div');anchor.className='pill-anchor';const pill=document.createElement('div');pill.className='pill';pill.setAttribute('aria-label',t('pill'));
   for(const key of state.actions){
    if(key==='status'&&card.kind!=='task')continue;
    const btn=document.createElement('button');btn.type='button';btn.dataset.action=key;btn.setAttribute('aria-label',t(key));btn.className=key;
-   if(key==='status'){btn.classList.toggle('done',card.status==='done');btn.innerHTML=card.status==='done'?svg('check'):'<span aria-hidden="true">○</span>';const text=document.createElement('span');text.textContent=t(card.status);btn.append(text);}
+   if(key==='status'){btn.classList.toggle('done',card.status==='done');btn.innerHTML=svg('status');btn.setAttribute('aria-label',t(card.status)+': '+card.title);}
    else btn.innerHTML=svg(icons[key]);
-   const tooltip=document.createElement('span');tooltip.className='tooltip';tooltip.textContent=t(key);btn.append(tooltip);btn.addEventListener('click',()=>action(card,key));pill.append(btn);
+   const tooltip=document.createElement('span');tooltip.className='tooltip';tooltip.textContent=t(key==='status'?card.status:key);btn.append(tooltip);btn.addEventListener('click',()=>action(card,key));pill.append(btn);
   }
   if(card.kind==='desk'){const btn=document.createElement('button');btn.type='button';btn.setAttribute('aria-label',t('desk'));btn.innerHTML=svg('open');btn.onclick=()=>action(card,'desk');pill.append(btn);}
   if(pill.children.length){anchor.append(pill);node.append(anchor);}node.append(chatPill(card));if(['file','stack','tunnel'].includes(card.kind))node.append(cornerPill(card,'preview'));world.append(node);
@@ -566,6 +576,7 @@ function renderTunnelInspector(card){
   select.onchange=()=>{card.scope=select.value;tunnelFolder=null;renderCards();save();};label.append(caption,select);host.append(label);
   const help=document.createElement('p');help.className='tunnel-editor-help';help.textContent=t('scopeLimit');host.append(help);return;
  }
+ if(card.targetStatus==='unreachable'){const message=document.createElement('p');message.className='muted';message.textContent=t('unreachable');host.append(message);return;}
  const list=document.createElement('div');list.className='tunnel-content';host.append(list);
  const folder=tunnelFolder||card.scope;
  function item(name,kind,handle){const btn=document.createElement('button');btn.type='button';const icon=document.createElement('span');icon.setAttribute('aria-hidden','true');icon.textContent=kind==='folder'?'▸':'▤';const text=document.createElement('span');text.textContent=name;btn.append(icon,text);
@@ -585,12 +596,13 @@ function startDrag(event,node,card){
 }
 function action(card,key){
  choose(card.id);
- if(card.kind==='tunnel'&&['preview','menu'].includes(key)){showTunnelInspector(card);return;}
+ if(card.kind==='tunnel'&&key==='preview'){showTunnelInspector(card);return;}
  if(key==='status'){card.status=card.status==='done'?'open':'done';renderCards();selectionControls();save();return;}
  const content=$('modal-content');content.replaceChildren();$('modal-title').textContent=key==='desk'?t('desk'):t(key);
  if(key==='preview')content.innerHTML=picture();
- const text=document.createElement('p');text.textContent=key==='chat'?t('demoChat'):key==='links'?t('demoLinks'):key==='calendar'?t('demoCalendar'):key==='menu'?t('demoMenu'):key==='desk'?t('demoDesk'):key==='creator'?'Alex · AI Worker':key==='checklist'?'2 / 5':(card.note||t('empty'));content.append(text);if(!$('modal').open)$('modal').showModal();
+ const text=document.createElement('p');text.textContent=key==='chat'?t('demoChat'):key==='links'?t('demoLinks'):key==='calendar'?t('demoCalendar'):key==='desk'?(card.targetStatus==='unreachable'?t('unreachable'):t('demoDesk')):key==='checklist'?'2 / 5':(card.note||t('empty'));content.append(text);if(!$('modal').open)$('modal').showModal();
 }
+for(const kind of ['tunnel','desk'])$(kind+'-target-status').onchange=()=>{const card=state.cards.find(c=>c.kind===kind);card.targetStatus=$(kind+'-target-status').value;renderCards();selectionControls();save();};
 for(const [id,tab] of [['tunnel-view-tab','view'],['tunnel-edit-tab','edit']])$(id).onclick=()=>{const card=state.cards.find(c=>c.id===selected);if(card?.kind==='tunnel'){tunnelTab=tab;renderTunnelInspector(card);}};
 for(const key of ['skin','mode','language','visibility','radius'])$(key).addEventListener('change',()=>{state[key]=$(key).value;apply();save();});
 for(const key of ['constant','area'])$(key).addEventListener('change',()=>{state[key]=$(key).checked;apply();save();});

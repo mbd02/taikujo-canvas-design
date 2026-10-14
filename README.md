@@ -4,7 +4,12 @@
 
 A standalone design draft with dummy elements, a separate top-right comment
 chat pill on every card, a mirrored top-left preview pill on files/stacks/Tunnels,
-and a lower pill for the remaining actions. Corner controls stay separate at low zoom.
+and a lower pill for the remaining actions. Task status is a circle only
+(outline = open, filled = done). Creator/AI-change, focus and the generic menu
+indicators, assets and handlers are removed. Corner controls stay separate at low zoom.
+Use the right-side availability controls to simulate an unreachable Tunnel or
+Desk target: translucent shape overlay and a centered dark red triangle.
+These controls do not check real destinations.
 Original app SVG outlines, including the task contour, rounded decision,
 capsule event, flat Desk ribbon and square files. Proposed Tunnel shape: a true
 semicircular arch over straight walls and a flat base; no fake depth yet. Files/covers are
