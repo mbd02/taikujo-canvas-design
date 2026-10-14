@@ -5,7 +5,8 @@
 A standalone design draft with dummy elements, a separate top-right comment
 chat pill on every card and a lower pill for the remaining actions.
 Original app SVG outlines, including the task contour, rounded decision,
-capsule event, tunnel arch, flat Desk ribbon and square files. Files/covers are
+capsule event, flat Desk ribbon and square files. Proposed Tunnel shape: a true
+semicircular arch over straight walls and a flat base; no fake depth yet. Files/covers are
 capped at the base element width. Tunnels use half that width and the provider
 icon; account and scope appear in a single draft hover. Double-click a Tunnel
 or click its eye for inline Inspector content browsing and scope editing.

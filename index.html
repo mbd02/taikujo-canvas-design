@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="de" data-skin="clay" data-theme="dark" data-preview-revision="86f772bdb9c3">
+<html lang="de" data-skin="clay" data-theme="dark" data-preview-revision="dad7fcabf575">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -434,7 +434,11 @@ function cardSize(card){
  return {width:base.width*state.width/256,height:base.height*state.height/159};
 }
 function cardShape(card){
- const key=APP_KIND[card.kind],shape=SHAPE_GEOMETRY[key];
+ const key=APP_KIND[card.kind];
+ // Proposed Tunnel silhouette: a true semicircle above straight walls.
+ // Its radius follows the rendered width, so resizing never flattens the arch.
+ const size=cardSize(card),radius=size.width/2;
+ const shape=key==='tunnel'?{viewBox:`0 0 ${size.width} ${size.height}`,markup:`<path d="M0 ${size.height}V${radius}A${radius} ${radius} 0 0 1 ${size.width} ${radius}V${size.height}Z"/>`}:SHAPE_GEOMETRY[key];
  const material=shape.markup.replace(/^<(\w+)/,'<$1 class="node-material"');
  return `<svg class="node-shape" data-shape-key="${key}" viewBox="${shape.viewBox}" preserveAspectRatio="${['file','stack','tunnel','map_link'].includes(key)?'none':'xMidYMid meet'}" aria-hidden="true">${shape.markup}${material}</svg>`;
 }
