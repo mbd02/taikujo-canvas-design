@@ -2,7 +2,8 @@
 
 **[Open the live playground](https://mbd02.github.io/taikujo-canvas-design/)**
 
-A standalone design draft with dummy elements and one shared indicator pill.
+A standalone design draft with dummy elements, a separate top-right comment
+chat pill on every card and a lower pill for the remaining actions.
 Original app SVG outlines and starting dimensions, including the task contour,
 rounded decision, capsule event, tunnel arch, flat Desk ribbon and square files.
 Five material themes, light/dark mode, DE/EN, zoom, movable cards and editable
