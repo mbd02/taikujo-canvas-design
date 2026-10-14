@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="de" data-skin="clay" data-theme="dark" data-preview-revision="09e30b1b5964">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>tAIkujo · Canvas Design Lab</title>
+<style>
+/* Snapshot of the application's material/color tokens. No app scripts or services. */
+/* Appearance contract: layout is shared; skins set materials, modes set colors.
+   Canvas semantic shapes, user colors and interaction states stay independent. */
+:root {
+  /* Material tokens: static paint only; no live blur or animated sheen. */
+  --material-top: light-dark(rgb(255 255 255 / .12), rgb(139 224 241 / .08));
+  --material-mid: transparent;
+  --material-bottom: light-dark(rgb(28 57 46 / .06), rgb(0 0 0 / .06));
+  --material-rim: light-dark(rgb(255 255 255 / .22), rgb(147 228 242 / .2));
+  --control-bevel: none;
+  --canvas-title-size: 16px;
+  --canvas-note-size: 14px;
+  --hover-instant: 0ms;
+  --hover-delayed: 500ms;
+  color-scheme: dark;
+  --bg: light-dark(#aebbb8, #171e25);
+  --canvas: light-dark(#a6b3af, #1b252e);
+  --panel: light-dark(#c5d0c9, #26333e);
+  --panel-2: light-dark(#b8c6c0, #30414e);
+  --hover: light-dark(#b2beb6, #444444);
+  --border: light-dark(#556c63, #536d7c);
+  --border-soft: light-dark(#94a69d, #364c59);
+  --border-strong: light-dark(#606e66, #686868);
+  --text: light-dark(#1e2825, #e2edf0);
+  --muted: light-dark(#3c4b45, #b6c4cb);
+  --muted-2: light-dark(#43524a, #919191);
+  --accent: light-dark(#086882, #4bcfe3);
+  --accent-hover: light-dark(#07566b, #83e6f1);
+  --on-accent: #fff;
+  --action-fill: light-dark(var(--accent), #0873be);
+  --action-hover: light-dark(var(--accent-hover), #0868aa);
+  --purple: light-dark(#775598, #a259ff);
+  --ink-info: light-dark(#285f80, #91d2f3);
+  --ink-purple: light-dark(#634078, #d5b7f7);
+  --ink-success: light-dark(#2c644a, #91d3ac);
+  --ink-warning: light-dark(#654914, #e0c477);
+  --ink-danger: light-dark(#963f3b, #edaaa3);
+  --surface-info: color-mix(in srgb, var(--ink-info) 12%, var(--panel));
+  --surface-purple: color-mix(in srgb, var(--ink-purple) 12%, var(--panel));
+  --surface-success: color-mix(in srgb, var(--ink-success) 12%, var(--panel));
+  --surface-warning: color-mix(in srgb, var(--ink-warning) 12%, var(--panel));
+  --surface-danger: color-mix(in srgb, var(--ink-danger) 12%, var(--panel));
+  --border-info: color-mix(in srgb, var(--ink-info) 40%, var(--border));
+  --border-purple: color-mix(in srgb, var(--ink-purple) 40%, var(--border));
+  --border-success: color-mix(in srgb, var(--ink-success) 40%, var(--border));
+  --border-warning: color-mix(in srgb, var(--ink-warning) 40%, var(--border));
+  --border-danger: color-mix(in srgb, var(--ink-danger) 40%, var(--border));
+  --danger: var(--ink-danger);
+  --green: var(--ink-success);
+  --line: var(--border);
+  --edge-stroke: var(--muted);
+  --edge-selected: var(--accent-hover);
+  --edge-connected: var(--ink-info);
+  --font-ui-default: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-ui: var(--font-ui-default);
+  --font-heading: var(--font-ui);
+  --font-mono: "SFMono-Regular", Consolas, monospace;
+  --mono: var(--font-mono);
+  --type-meta-size: var(--type-body-size);
+  --type-small-size: var(--type-body-size);
+  --type-body-size: 14px;
+  /* Opt-in exception for timestamps, tool disclosures and secondary captions. */
+  --type-caption-size: 12px;
+  --type-heading-size: 18px;
+  --radius-xs: 3px;
+  --radius-sm: 4px;
+  --radius-control: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-dialog: 9px;
+  --widget-pill-radius: 999px;
+  --control-radius: var(--radius-control);
+  --control-height: 34px;
+  --control-padding-x: 9px;
+  --control-font-size: var(--type-body-size);
+  --control-line-height: 1.4;
+  --ui-menu-item-padding: 7px 9px;
+  --ui-menu-item-radius: var(--radius-sm);
+  --shadow-rgb: 0 0 0;
+  --shadow-overlay: 0 22px 70px light-dark(rgb(27 36 35 / .18), rgb(0 0 0 / .42));
+  --shadow-menu: 0 10px 30px light-dark(rgb(27 36 35 / .16), rgb(0 0 0 / .5));
+  --shadow-tooltip: 0 8px 24px light-dark(rgb(27 36 35 / .16), rgb(0 0 0 / .34));
+  --shadow-node: drop-shadow(0 2px 8px rgb(0 0 0 / .22));
+  --node-surface: light-dark(#c9d4cc, #2d3c48);
+  --node-border: light-dark(#4b645a, #799eae);
+  /* Distinct, muted type fills; text and state accents use their own tokens. */
+  --note-sage: light-dark(#b9cdbb, #344e43);
+  --note-rose: light-dark(#d5bebd, #553e46);
+  --note-lavender: light-dark(#c7c1d8, #474259);
+  --canvas-grid: light-dark(rgb(35 81 72 / .14), rgb(92 186 205 / .14));
+  --chrome-underlay: var(--panel);
+  --chrome-outline: var(--border-soft);
+  --chrome-inset: 0px;
+  --chrome-radius: 0px;
+  --chrome-fill: var(--panel);
+  --chrome-gloss: none;
+  --chrome-shadow: none;
+  --toolbar-height: 52px;
+  --sidebar-width: 280px;
+  --sidebar-shadow-x: 8px;
+  --sidebar-shadow-blur: 28px;
+  --sidebar-shadow-color: rgb(0 0 0 / .22);
+  /* Tag defaults are content colors, not theme accents. */
+  --tag-vorgabe: #4a9eff;
+  --tag-nogo: #f24822;
+  --tag-wunsch: #1bc47d;
+  --tag-idee: #ffcd29;
+  --tag-notiz: #858585;
+}
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-skin="office"] {
+  --material-top: light-dark(rgb(255 250 213 / .2), rgb(244 221 150 / .06));
+  --material-mid: transparent;
+  --material-bottom: light-dark(rgb(105 80 28 / .12), rgb(0 0 0 / .12));
+  --material-rim: light-dark(rgb(255 255 226 / .48), rgb(225 211 158 / .2));
+  --control-bevel: inset 1px 1px 0 light-dark(#e5e5d8, #666b65), inset -1px -1px 0 light-dark(#85887d, #242827);
+  --office-titlebar-ink: #eef2f7;
+  --office-titlebar: linear-gradient(90deg, light-dark(#293d68, #28384d), light-dark(#617c94, #4b6377));
+  --sidebar-shadow-x: 2px;
+  --sidebar-shadow-blur: 6px;
+  --sidebar-shadow-color: rgb(0 0 0 / .12);
+  --font-ui: var(--font-ui-default); /* Stable chrome metrics; paper comes from material. */
+  --font-heading: var(--font-ui);
+  --font-mono: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  --bg: light-dark(#cbc1b4, #26242a);
+  --canvas: light-dark(#aaa799, #292b2c);
+  --panel: light-dark(#c9c9bd, #393b3b);
+  --panel-2: light-dark(#bbbdaf, #454747);
+  --hover: light-dark(#bcb0a6, #4c434c);
+  --text: light-dark(#2d2731, #eee6e8);
+  --muted: light-dark(#4e424e, #bcb0ba);
+  --muted-2: light-dark(#544653, #ac9ca8);
+  --border: light-dark(#686c64, #73786f);
+  --border-soft: light-dark(#a1a494, #4f534c);
+  --border-strong: light-dark(#786171, #806b7e);
+  --accent: light-dark(#304c79, #b1c6dd);
+  --accent-hover: light-dark(#233b64, #cbdcec);
+  --on-accent: light-dark(#fff, #263545);
+  --action-fill: var(--accent);
+  --action-hover: var(--accent-hover);
+  --ink-info: light-dark(#365461, #aec7d4);
+  --ink-purple: light-dark(#59375f, #cfb1d6);
+  --ink-success: light-dark(#36503c, #b3c9ad);
+  --ink-warning: light-dark(#604a21, #d7c699);
+  --ink-danger: light-dark(#824550, #d7a6b0);
+  --node-surface: light-dark(#d8cb91, #49412a);
+  --note-sage: light-dark(#bdcbaa, #304633);
+  --note-rose: light-dark(#d4b8b5, #503740);
+  --note-lavender: light-dark(#c5bdd4, #443c54);
+  --node-border: light-dark(#605d48, #a59a79);
+  --canvas-grid: light-dark(rgb(109 91 80 / .1), rgb(218 197 198 / .08));
+  --radius-xs: 2px;
+  --radius-sm: 3px;
+  --radius-control: 2px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-dialog: 3px;
+  --widget-pill-radius: 0px;
+  --shadow-overlay: 0 10px 32px light-dark(rgb(68 49 44 / .16), rgb(0 0 0 / .35));
+  --shadow-menu: 0 5px 16px light-dark(rgb(68 49 44 / .16), rgb(0 0 0 / .3));
+  --shadow-node: drop-shadow(1px 3px 2px light-dark(rgb(74 54 41 / .18), rgb(0 0 0 / .3)));
+}
+:root[data-skin="glass"] {
+  --material-top: light-dark(rgb(255 255 255 / .48), rgb(211 242 255 / .26));
+  --material-mid: light-dark(rgb(233 248 255 / .06), rgb(186 225 255 / .02));
+  --material-bottom: light-dark(rgb(57 109 154 / .14), rgb(7 21 40 / .22));
+  --material-rim: light-dark(rgb(246 253 255 / .8), rgb(204 242 255 / .58));
+  --sidebar-shadow-color: transparent;
+  --font-ui: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-heading: var(--font-ui);
+  --bg: light-dark(#bacdd6, #182329);
+  --canvas: light-dark(#9faebc, #192b38);
+  --panel: light-dark(#c3d2dc, #2c404e);
+  --panel-2: light-dark(#b4c8d5, #354c5c);
+  --hover: light-dark(#a1bbcd, #435965);
+  --text: light-dark(#18323f, #e7f1f3);
+  --muted: light-dark(#354f5e, #b9ced9);
+  --muted-2: light-dark(#3a5261, #95acb6);
+  --border: light-dark(#506d80, #648797);
+  --border-soft: light-dark(#91a9b8, #405e70);
+  --border-strong: light-dark(#527080, #6a8995);
+  --accent: light-dark(#286a83, #93cbdc);
+  --accent-hover: light-dark(#21586e, #b2deea);
+  --on-accent: light-dark(#fff, #19323c);
+  --action-fill: var(--accent);
+  --action-hover: var(--accent-hover);
+  --ink-info: light-dark(#28586e, #a1d0df);
+  --node-surface: light-dark(#bdcedc, #304b60);
+  --note-sage: light-dark(#b6d3c7, #31584f);
+  --note-rose: light-dark(#d8c1ce, #594654);
+  --note-lavender: light-dark(#c7c5e0, #4a4969);
+  --node-border: light-dark(#496678, #88b6ce);
+  --canvas-grid: light-dark(rgb(71 109 124 / .08), rgb(193 230 239 / .06));
+  --radius-xs: 5px;
+  --radius-sm: 6px;
+  --radius-control: 9px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-dialog: 14px;
+  --shadow-node: drop-shadow(0 2px 3px rgb(20 43 53 / .14));
+  --chrome-underlay: transparent;
+  --chrome-outline: light-dark(rgb(239 249 255 / .8), rgb(176 225 255 / .48));
+  --chrome-inset: 5px;
+  --chrome-radius: 18px;
+  --chrome-fill: light-dark(rgb(186 208 227 / .76), rgb(36 63 82 / .78));
+  --chrome-gloss: linear-gradient(125deg, rgb(255 255 255 / .28), transparent 28%, rgb(187 224 255 / .08) 65%, transparent), linear-gradient(180deg, rgb(239 249 255 / .18), transparent 85px);
+  --chrome-shadow: inset 0 1px 0 rgb(255 255 255 / .7), inset 1px 0 0 rgb(229 249 255 / .25), inset 0 -1px 0 rgb(10 35 53 / .24), 0 5px 14px rgb(9 28 43 / .2);
+}
+:root[data-skin="studio"] {
+  /* Matte, neutral workspace. Paint only: shared type metrics, spacing and
+     canvas geometry remain unchanged, including user-authored node colors. */
+  --material-top: transparent;
+  --material-mid: transparent;
+  --material-bottom: transparent;
+  --material-rim: transparent;
+  --bg: light-dark(#eef0f3, #17191d);
+  --canvas: light-dark(#e9ecf0, #191c21);
+  --panel: light-dark(#f7f8fa, #23262c);
+  --panel-2: light-dark(#eceff3, #2c3037);
+  --hover: light-dark(#e1e6ee, #363c46);
+  --text: light-dark(#252a33, #edf0f5);
+  --muted: light-dark(#505a69, #bac2cf);
+  --muted-2: light-dark(#5d6878, #a5afbf);
+  --border: light-dark(#7e8999, #697586);
+  --border-soft: light-dark(#d4d9e1, #3a414c);
+  --border-strong: light-dark(#647185, #8a98ad);
+  --accent: light-dark(#315da8, #9abaf5);
+  --accent-hover: light-dark(#244b8c, #bdd2fa);
+  --on-accent: #fff;
+  --action-fill: #315da8;
+  --action-hover: #244b8c;
+  --purple: light-dark(#72509a, #c6ace8);
+  --ink-info: light-dark(#315a8d, #adc8f0);
+  --ink-purple: light-dark(#6b4488, #d2b8ed);
+  --ink-success: light-dark(#32664c, #a4d3b8);
+  --ink-warning: light-dark(#77551d, #dfc28c);
+  --ink-danger: light-dark(#9b414c, #edb0b8);
+  --node-surface: light-dark(#fafbfd, #2d333d);
+  --node-border: light-dark(#7b8798, #8492a6);
+  --note-sage: light-dark(#e2ece5, #2b4038);
+  --note-rose: light-dark(#f0e3e6, #45323b);
+  --note-lavender: light-dark(#e9e5f2, #3c354c);
+  --canvas-grid: light-dark(rgb(75 90 113 / .1), rgb(171 184 205 / .08));
+  --shadow-overlay: 0 16px 48px light-dark(rgb(30 42 60 / .14), rgb(0 0 0 / .32));
+  --shadow-menu: 0 6px 20px light-dark(rgb(30 42 60 / .12), rgb(0 0 0 / .28));
+  --shadow-tooltip: 0 4px 16px light-dark(rgb(30 42 60 / .1), rgb(0 0 0 / .24));
+  --shadow-node: drop-shadow(0 1px 2px light-dark(rgb(30 42 60 / .1), rgb(0 0 0 / .18)));
+  --sidebar-shadow-color: transparent;
+}
+:root[data-skin="clay"] {
+  /* Grey clay with a trace of pastel. Invisible decorative borders retain their
+     box metrics; semantic state strokes and keyboard focus remain independent. */
+  --bg: light-dark(#dedde0, #202125);
+  --canvas: light-dark(#d5d4d9, #25262c);
+  --panel: light-dark(#e9e7eb, #35363e);
+  --panel-2: light-dark(#dedce2, #3d3e47);
+  --hover: light-dark(#d0cdd7, #494a55);
+  --text: light-dark(#303038, #efedf3);
+  --muted: light-dark(#53525f, #c5c3ce);
+  --muted-2: light-dark(#5d5b69, #b7b4c3);
+  --border: transparent;
+  --border-soft: transparent;
+  --chrome-outline: transparent;
+  --line: transparent;
+  --border-strong: light-dark(rgb(82 79 95 / .2), rgb(201 196 216 / .2));
+  --accent: light-dark(#665b8a, #bab1d6);
+  --accent-hover: light-dark(#514771, #d0c8e7);
+  --on-accent: #fff;
+  --action-fill: #665b8a;
+  --action-hover: #514771;
+  --purple: light-dark(#78519a, #cfaff0);
+  --ink-info: light-dark(#3c5e8b, #b2ccec);
+  --ink-purple: light-dark(#704687, #d8b7f0);
+  --ink-success: light-dark(#35674f, #a8d6bd);
+  --ink-warning: light-dark(#79541e, #e7cb92);
+  --ink-danger: light-dark(#994550, #efb3c0);
+  --node-surface: light-dark(#e6e2eb, #464550);
+  --node-border: transparent;
+  --note-sage: light-dark(#dce3de, #3c4843);
+  --note-rose: light-dark(#e7dfe2, #4d4149);
+  --note-lavender: light-dark(#e2dee9, #484350);
+  --canvas-grid: light-dark(rgb(82 79 95 / .09), rgb(196 192 209 / .07));
+  --material-top: light-dark(rgb(255 255 255 / .34), rgb(234 231 246 / .12));
+  --material-mid: transparent;
+  --material-bottom: light-dark(rgb(89 84 106 / .12), rgb(11 11 18 / .22));
+  --material-rim: transparent;
+  --clay-light: light-dark(rgb(255 255 255 / .56), rgb(223 219 238 / .1));
+  --clay-shade: light-dark(rgb(94 89 109 / .18), rgb(10 10 17 / .36));
+  /* Raised clay has broad, subdued lighting; recessed fields keep their own relief. */
+  --clay-raised-light: light-dark(rgb(255 255 255 / .22), rgb(223 219 238 / .055));
+  --clay-raised-shade: light-dark(rgb(94 89 109 / .11), rgb(10 10 17 / .24));
+  --clay-raised: 4px 6px 18px light-dark(rgb(76 73 89 / .16), rgb(0 0 0 / .28)), inset 1px 1px 12px var(--clay-raised-light), inset -2px -2px 14px var(--clay-raised-shade);
+  --control-bevel: -2px -3px 8px var(--clay-raised-light), 3px 4px 9px var(--clay-raised-shade), inset 1px 1px 7px var(--clay-raised-light), inset -1px -1px 8px var(--clay-raised-shade);
+  --shadow-overlay: 8px 14px 36px light-dark(rgb(76 73 89 / .22), rgb(0 0 0 / .4)), inset 1px 1px 12px var(--clay-raised-light), inset -2px -2px 14px var(--clay-raised-shade);
+  --shadow-menu: var(--clay-raised);
+  --shadow-tooltip: 0 4px 12px light-dark(rgb(76 73 89 / .18), rgb(0 0 0 / .3));
+  --shadow-node: drop-shadow(2px 4px 4px light-dark(rgb(76 73 89 / .2), rgb(0 0 0 / .32)));
+  --radius-xs: 4px;
+  --radius-sm: 7px;
+  --radius-control: 9px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-dialog: 16px;
+  --chrome-radius: 14px;
+  --sidebar-shadow-color: light-dark(rgb(76 73 89 / .12), rgb(0 0 0 / .2));
+}
+
+*{box-sizing:border-box}body{margin:0;font:14px/1.45 var(--font-ui);color:var(--text);background:var(--bg)}
+button,input,select,textarea{font:inherit;color:inherit}button,select,input[type="text"],textarea{background:var(--panel-2);border:1px solid var(--border-strong);border-radius:var(--radius-control)}
+button{cursor:pointer;padding:7px 11px}button:hover{background:var(--hover)}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+button[aria-pressed="true"]{color:var(--accent);background:var(--panel)}input[type="range"],input[type="checkbox"]{accent-color:var(--accent)}input[type="range"]{width:100%}input[type="text"],textarea,select{padding:7px;max-width:100%;min-width:0}textarea{resize:vertical;width:100%}input[type="text"]{width:100%}
+header{display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid var(--border-strong);background:var(--panel)}
+.brand{font-size:18px;letter-spacing:-.5px}.badge{font-size:var(--type-caption-size);color:var(--muted);padding:3px 7px;border:1px solid var(--border-strong);border-radius:var(--radius-sm)}
+.toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:9px;margin-left:auto}.toolbar label{display:flex;gap:6px;align-items:center}.toolbar select{max-width:125px}
+main{display:grid;grid-template-columns:minmax(0,1fr) 300px;min-height:calc(100dvh - 76px)}
+.workspace{min-width:0;display:flex;flex-direction:column}.hint{margin:0;padding:12px 20px;color:var(--muted);background:var(--panel)}
+.viewport{position:relative;flex:1;min-height:500px;max-height:calc(100dvh - 160px);overflow:auto;background-color:var(--canvas);background-image:radial-gradient(var(--canvas-grid) 1px,transparent 1px);background-size:24px 24px;overscroll-behavior:contain}
+.extent{position:relative;margin:34px}.world{position:absolute;left:0;top:0;width:1280px;height:860px;transform-origin:0 0;isolation:isolate}
+.area{position:absolute;inset:20px 20px 40px;border:1px dashed var(--accent);background:color-mix(in srgb,var(--accent) 4%,transparent);border-radius:var(--radius-lg);pointer-events:none}.area-label{position:absolute;top:-30px;left:14px;color:var(--muted)}
+.node{position:absolute;width:var(--card-width);height:var(--card-height);touch-action:none;cursor:grab;user-select:none}.node.dragging{cursor:grabbing;z-index:20}.node.selected{z-index:10}
+.surface{width:100%;height:100%;position:relative;display:flex;align-items:center;justify-content:center;padding:20px;background:var(--node-surface);border:1px solid var(--node-border);border-radius:var(--card-radius);filter:var(--shadow-node)}
+.node.selected .surface{outline:2px solid var(--accent);outline-offset:4px}.node[data-kind="event"] .surface{border-radius:50%;padding:30px}.node[data-kind="decision"] .surface{clip-path:polygon(13% 7%,50% 0,87% 7%,100% 50%,87% 93%,50% 100%,13% 93%,0 50%);padding:30px}
+.node[data-kind="tunnel"] .surface{border-radius:100px 100px 10px 10px;padding-top:30px;flex-direction:column;gap:8px}.tunnel-logo{width:30px;height:30px;color:var(--accent)}
+.node[data-kind="desk"] .surface{border-left:8px solid var(--accent);border-radius:var(--radius-sm)}
+.title{font-size:var(--title-size);line-height:1.22;font-weight:600;text-align:center;letter-spacing:var(--tracking);overflow:hidden;overflow-wrap:anywhere;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:var(--title-lines);max-width:100%}
+.node[data-kind="file"] .surface,.node[data-kind="stack"] .surface{border-radius:0;padding:0;display:flex;flex-direction:column;overflow:hidden}.thumbnail{width:100%;flex:1;min-height:0;display:flex;align-items:center;justify-content:center;background:var(--panel-2)}.thumbnail svg{width:100%;height:100%;object-fit:contain}.file-title{width:100%;padding:9px 12px;background:var(--node-surface)}.file-title .title{font-size:14px;-webkit-line-clamp:2}
+.stack-back{position:absolute;inset:-9px 12px 9px -12px;background:var(--panel-2);border:1px solid var(--border-strong);transform:rotate(-5deg);pointer-events:none}.stack-back.second{inset:3px -13px -3px 13px;transform:rotate(6deg);background:var(--note-sage)}
+.node[data-kind="stack"] .surface{height:100%;width:86%;margin:auto}.stack-count{position:absolute;right:10px;top:10px;background:var(--panel);padding:3px 8px;border-radius:var(--radius-sm)}
+.pill-anchor{position:absolute;left:50%;top:calc(100% + var(--pill-offset));transform:translateX(-50%) scale(var(--pill-scale));transform-origin:50% 0;z-index:3;cursor:default;max-width:none}
+.pill{display:flex;align-items:center;gap:var(--pill-gap);padding:var(--pill-padding);border:1px solid var(--border-soft);border-radius:var(--pill-radius);background:var(--panel);box-shadow:var(--shadow-menu);white-space:nowrap;min-height:32px}
+.pill button{position:relative;display:flex;align-items:center;justify-content:center;gap:6px;min-width:30px;height:30px;padding:4px 7px;border:0;background:transparent;border-radius:var(--radius-sm);color:var(--muted)}.pill button:hover{background:var(--panel-2);color:var(--text)}.pill svg{width:var(--icon-size);height:var(--icon-size);flex:none}.pill .status{color:var(--ink-warning)}.pill .status.done{color:var(--ink-success)}.pill .preview{color:var(--accent)}
+.pill button .tooltip{display:none;position:absolute;bottom:calc(100% + 12px);left:50%;transform:translateX(-50%);background:var(--panel-2);color:var(--text);padding:6px 9px;border:1px solid var(--border-strong);border-radius:var(--radius-sm);box-shadow:var(--shadow-tooltip);pointer-events:none;font-size:14px}
+.pill button:hover .tooltip,.pill button:focus-visible .tooltip{display:block}.node[data-pill-visibility="hover"]:not(:hover):not(.selected):not(:focus-within) .pill-anchor{opacity:0;pointer-events:none}
+:root[data-skin="clay"] .surface{box-shadow:var(--clay-raised);filter:none}:root[data-skin="clay"] .pill{box-shadow:var(--clay-raised)}
+aside{background:var(--panel);padding:17px;border-left:1px solid var(--border-strong);max-height:calc(100dvh - 76px);overflow:auto}h1{font-size:18px;margin:0 0 8px}h2{font-size:14px;margin:20px 0 9px}p{margin:0 0 10px}.muted{color:var(--muted)}
+.control{display:block;margin:0 0 12px}.control>span{display:flex;justify-content:space-between;gap:12px;margin-bottom:5px}.control output{color:var(--muted);font-variant-numeric:tabular-nums}.control select{width:100%}.checks{display:grid;gap:8px}.checks label{display:flex;align-items:center;gap:8px}.checks input{margin:0}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+footer{padding:8px 20px;background:var(--panel);display:flex;gap:16px;align-items:center;justify-content:space-between;font-size:var(--type-caption-size);color:var(--muted)}#notice{margin:10px 0 0;min-height:20px;color:var(--accent)}
+dialog{max-width:min(90vw,700px);width:640px;color:var(--text);background:var(--panel);padding:22px;border:1px solid var(--border-strong);border-radius:var(--radius-dialog);box-shadow:var(--shadow-overlay)}dialog::backdrop{background:rgb(0 0 0 / .45)}.dialog-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}.dialog-head h2{margin:0;font-size:18px}.preview-image{height:270px;width:100%;background:var(--panel-2);border-radius:0}#modal-content p{white-space:pre-wrap;overflow-wrap:anywhere}
+@media(max-width:800px){main{grid-template-columns:1fr}.viewport{max-height:60dvh;min-height:380px}aside{max-height:none;border-left:0;border-top:1px solid var(--border-strong)}header{padding:12px}.toolbar{margin-left:0}.hint{padding:12px}.extent{margin:24px}footer{flex-wrap:wrap}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" aria-hidden="true" style="position:absolute"><defs>
+<symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 4h16v12H9l-5 4V4Z"/><path d="M8 8h8M8 12h5"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 22v-3a8 8 0 0 1 16 0v3"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V6a4 4 0 0 1 8 0v4"/></symbol>
+<symbol id="i-focus" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 2v6M17 2v6M3 11h18M7 15h3M14 15h3"/></symbol>
+<symbol id="i-link" viewBox="0 0 24 24"><path d="m9 15 6-6M8 16l-2 2a4 4 0 0 1-6-6l5-5a4 4 0 0 1 6 0M16 8l2-2a4 4 0 0 1 6 6l-5 5a4 4 0 0 1-6 0" transform="translate(2 0) scale(.85)"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="m4 12 5 5L20 5"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><path d="m3 6 2 2 3-4M11 6h10M3 14h4M11 14h10M3 21h4M11 21h10"/></symbol>
+<symbol id="i-open" viewBox="0 0 24 24"><path d="M14 3h7v7M21 3 10 14M10 3H3v18h18v-7"/></symbol>
+<symbol id="i-drive" viewBox="0 0 24 24"><path d="M9 3h6l7 12-3 6H5l-3-6L9 3ZM9 3l10 18M15 3 5 21M2 15h20"/></symbol>
+<symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></symbol>
+<symbol id="picture" viewBox="0 0 400 240"><rect width="400" height="240" fill="#b5c6b7"/><circle cx="304" cy="66" r="27" fill="#eee2b5"/><path d="M0 179 105 75l94 116 73-89 128 113v25H0Z" fill="#688a7e"/><path d="m0 218 128-101 95 123H0Z" fill="#456c64"/><path d="m274 104 35 41-15-3-20-17-16 9Z" fill="#dfebe2"/></symbol>
+</defs></svg>
+<header><strong class="brand">tAIkujo</strong><span class="badge" data-ui="lab"></span><div class="toolbar">
+<label><span data-ui="theme"></span><select id="skin"><option value="default">Default</option><option value="office">Office</option><option value="glass">Glass</option><option value="studio">Studio</option><option value="clay">Clay</option></select></label>
+<label><span data-ui="mode"></span><select id="mode"><option value="dark" data-ui="dark"></option><option value="light" data-ui="light"></option></select></label>
+<label><span data-ui="language"></span><select id="language"><option value="de">Deutsch</option><option value="en">English</option></select></label>
+<button id="export" data-ui="export"></button><button id="import" data-ui="import"></button><input type="file" id="import-file" accept="application/json,.json" hidden>
+</div></header>
+<main><section class="workspace" aria-label="Canvas"><p class="hint" data-ui="hint"></p><div class="viewport"><div class="extent"><div class="world" id="world"></div></div></div><footer><span data-ui="dummy"></span><span id="revision-readout"></span><span id="zoom-readout"></span></footer></section>
+<aside><h1 data-ui="settings"></h1><p class="muted" data-ui="local"></p>
+<label class="control"><span><span data-ui="zoom"></span><output id="zoom-value"></output></span><input id="zoom" type="range" min="1" max="100" step="1"></label>
+<h2 data-ui="pill"></h2>
+<label class="control"><span data-ui="visibility"></span><select id="visibility"><option value="always" data-ui="always"></option><option value="hover" data-ui="hover"></option></select></label>
+<div id="pill-controls"></div>
+<label class="control"><span data-ui="radius"></span><select id="radius"><option value="theme" data-ui="themeRadius"></option><option value="round" data-ui="round"></option><option value="square" data-ui="square"></option></select></label>
+<div class="checks"><label><input id="constant" type="checkbox"><span data-ui="constant"></span></label></div>
+<h2 data-ui="functions"></h2><p class="muted" data-ui="functionsHint"></p><div class="checks" id="function-controls"></div>
+<h2 data-ui="elements"></h2><div id="card-controls"></div><div class="checks"><label><input id="area" type="checkbox"><span data-ui="area"></span></label></div>
+<h2 data-ui="selected"></h2><p class="muted" id="selection-hint" data-ui="selectHint"></p><div id="selection-controls" hidden>
+<label class="control"><span data-ui="title"></span><input type="text" id="title" maxlength="160"></label><label class="control"><span data-ui="note"></span><textarea id="note" rows="3" maxlength="2000"></textarea></label>
+<label class="control"><span data-ui="taskState"></span><select id="task-state"><option value="open" data-ui="open"></option><option value="done" data-ui="done"></option></select></label>
+</div><div class="actions"><button id="reset" data-ui="reset"></button></div><p id="notice" role="status" aria-live="polite"></p>
+</aside></main>
+<dialog id="modal"><div class="dialog-head"><h2 id="modal-title"></h2><button id="close-modal" data-ui="close"></button></div><div id="modal-content"></div><p class="muted" data-ui="dummy"></p></dialog>
+<script>
+'use strict';
+const VERSION=1, PREVIEW_REVISION=document.documentElement.dataset.previewRevision||'local', STORAGE='taikujo.canvas-design-lab.v1.'+PREVIEW_REVISION;
+const copy={
+revision:['Stand','Revision'],lab:['Canvas Design Lab · Entwurf','Canvas Design Lab · Draft'],theme:['Theme','Theme'],mode:['Modus','Mode'],dark:['Dunkel','Dark'],light:['Hell','Light'],language:['Sprache','Language'],export:['Design exportieren','Export design'],import:['Importieren','Import'],
+hint:['Element anklicken und verschieben. Rechts die Pill und Karten anpassen. Änderungen bleiben lokal; Export zum Teilen.','Click and drag an element. Adjust the pill and cards on the right. Changes stay local; export to share.'],dummy:['Nur Dummy-Inhalte · keine Verbindung zu echten Desks','Dummy content only · no connection to real Desks'],settings:['Design ausprobieren','Try the design'],local:['Eine gemeinsame Pill statt oberer und unterer Leiste.','One shared pill replaces the upper and lower bars.'],zoom:['Zoom','Zoom'],pill:['Pill','Pill'],visibility:['Sichtbarkeit','Visibility'],always:['Immer sichtbar','Always visible'],hover:['Bei Hover oder Auswahl','On hover or selection'],offset:['Abstand zur Karte','Distance from card'],gap:['Abstand zwischen Funktionen','Spacing between actions'],padding:['Innenabstand','Padding'],iconSize:['Icongröße','Icon size'],radius:['Pill-Form','Pill shape'],themeRadius:['Zum Theme passend','Match theme'],round:['Rund','Round'],square:['Eckig','Square'],constant:['Pill bleibt beim Zoomen gleich groß','Keep pill size constant while zooming'],functions:['Funktionen in der Pill','Pill actions'],functionsHint:['Testschalter für den Entwurf; noch keine Entscheidung über den finalen Inhalt.','Draft toggles; the final pill content is still undecided.'],creator:['Ersteller / AI-Änderung','Creator / AI change'],preview:['Vorschau','Preview'],lock:['Inhaltssperre','Content lock'],focus:['Fokus','Focus'],calendar:['Kalender','Calendar'],chat:['Kommentarchat','Comment chat'],links:['Weblinks inkl. RSS/Atom','Web links incl. RSS/Atom'],checklist:['Checklistenfortschritt','Checklist progress'],status:['Aufgabenstatus','Task status'],menu:['Weitere Funktionen','More actions'],elements:['Elemente','Elements'],width:['Kartenbreite','Card width'],height:['Kartenhöhe','Card height'],titleSize:['Titelgröße','Title size'],titleLines:['Titelzeilen','Title lines'],tracking:['Buchstabenabstand','Letter spacing'],area:['Bereich anzeigen','Show area'],selected:['Ausgewähltes Element','Selected element'],selectHint:['Klicke eine Karte an, um ihren Text zu testen.','Click a card to try different text.'],title:['Titel','Title'],note:['Notiz','Note'],taskState:['Aufgabenstatus','Task status'],open:['Offen','Open'],done:['Erledigt','Done'],reset:['Zurücksetzen','Reset'],close:['Schließen','Close'],saved:['Design als JSON exportiert.','Design exported as JSON.'],loaded:['Design importiert.','Design imported.'],invalid:['Diese Datei ist kein gültiger Design-Export.','This file is not a valid design export.'],importError:['Die Datei konnte nicht gelesen werden.','The file could not be read.'],unsaved:['Lokales Speichern nicht verfügbar. Bitte exportieren.','Local storage unavailable. Please export.'],research:['Recherche','Research'],empty:['Keine Notiz vorhanden.','No note yet.'],demoChat:['Alex: Schau dir bitte diese Variante an.\nAI Worker: Hier könnte später die Antwort stehen.','Alex: Please take a look at this version.\nAI Worker: A reply could appear here later.'],demoLinks:['Webseite · Beispiel-Link\nRSS/Atom · Beispiel-Feed mit Artikelliste\n\nIn diesem Entwurf wird nichts extern abgerufen.','Website · Example link\nRSS/Atom · Example feed with an article list\n\nThis draft makes no external requests.'],demoCalendar:['16. Oktober · Review\n18. Oktober · Freigabe','16 October · Review\n18 October · Approval'],demoMenu:['Eigenschaften, Freigaben und weitere Aktionen gestalten wir im nächsten Schritt.','We will design properties, permissions and other actions in the next step.'],desk:['Desk öffnen','Open Desk'],demoDesk:['Ein Desk-Verweis würde den verlinkten Desk öffnen.','A Desk reference would open the linked Desk.'],stack:['Stapel öffnen','Open stack'],demoStack:['Moodboard.png\nBriefing.md\nEntwurf.pdf\nFoto.heic','Moodboard.png\nBriefing.md\nDraft.pdf\nPhoto.heic']
+};
+const specs={offset:[-16,24,1,'px'],gap:[0,14,1,'px'],padding:[0,12,1,'px'],iconSize:[14,24,1,'px'],width:[160,320,1,'px'],height:[120,260,1,'px'],titleSize:[14,20,1,'px'],titleLines:[1,5,1,''],tracking:[-.6,.2,.05,'px']};
+const actions=['creator','preview','lock','focus','calendar','chat','links','checklist','status','menu'];
+const kinds=['note','task','event','decision','file','stack','tunnel','desk'];
+const icons={creator:'user',preview:'eye',lock:'lock',focus:'focus',calendar:'calendar',chat:'chat',links:'link',checklist:'list',menu:'more',desk:'open'};
+function defaults(){return {version:VERSION,skin:'clay',mode:'dark',language:'de',zoom:100,visibility:'always',radius:'theme',constant:true,area:false,offset:-12,gap:0,padding:3,iconSize:18,width:256,height:168,titleSize:16,titleLines:3,tracking:-.15,actions:['creator','preview','chat','status','menu'],cards:[
+{id:'note',kind:'note',title:'Ideen für den nächsten Launch sammeln',note:'Ein normales Element mit Notiz. Mehr Platz für den Titel, keine Leisten auf der Karte.',x:66,y:98},
+{id:'task',kind:'task',title:'Die erste Variante gemeinsam prüfen',note:'Eine Aufgabe mit unabhängigem Status und Checkliste.',status:'open',x:366,y:98},
+{id:'event',kind:'event',title:'Design Review am Freitag',note:'Ein Event als eigene Form.',x:666,y:98},
+{id:'decision',kind:'decision',title:'Welche Variante nehmen wir?',note:'Eine Entscheidung mit etwas längerem Titel zum Testen.',x:966,y:98},
+{id:'file',kind:'file',title:'Moodboard.png',note:'Bildkarte mit sparsamer Vorschau und eckigen Kanten.',x:66,y:443},
+{id:'stack',kind:'stack',title:'Launch · 4 Dateien',note:'Gemischte Dateitypen in einem Stapel.',x:366,y:443},
+{id:'tunnel',kind:'tunnel',title:'Google Drive',note:'Konto: Alex · Scope: Launch-Team',x:666,y:443},
+{id:'desk',kind:'desk',title:'Launch Recherche',note:'Verweis auf einen weiteren Desk.',x:966,y:443}
+]};}
+function validate(raw){
+ const d=defaults();if(!raw||raw.version!==VERSION||!Array.isArray(raw.cards)||raw.cards.length!==d.cards.length)throw Error('version');
+ for(const key of ['skin','mode','language','visibility','radius']){
+  const values={skin:['default','office','glass','studio','clay'],mode:['dark','light'],language:['de','en'],visibility:['always','hover'],radius:['theme','round','square']}[key];if(!values.includes(raw[key]))throw Error(key);d[key]=raw[key];
+ }
+ for(const [key,[min,max]] of Object.entries({...specs,zoom:[1,100]})){if(typeof raw[key]!=='number'||!Number.isFinite(raw[key])||raw[key]<min||raw[key]>max)throw Error(key);d[key]=raw[key];}
+ for(const key of ['constant','area']){if(typeof raw[key]!=='boolean')throw Error(key);d[key]=raw[key];}
+ if(!Array.isArray(raw.actions)||raw.actions.length>actions.length||new Set(raw.actions).size!==raw.actions.length||raw.actions.some(key=>!actions.includes(key)))throw Error('actions');d.actions=[...raw.actions];
+ d.cards=d.cards.map((base,index)=>{const c=raw.cards[index];if(!c||c.id!==base.id||c.kind!==base.kind||!kinds.includes(c.kind)||typeof c.title!=='string'||c.title.length>160||typeof c.note!=='string'||c.note.length>2000)throw Error('card');for(const key of ['x','y'])if(!Number.isFinite(c[key])||c[key]<0||c[key]>1280)throw Error(key);if(base.kind==='task'&&!['open','done'].includes(c.status))throw Error('status');return {...base,title:c.title,note:c.note,x:c.x,y:c.y,...(base.kind==='task'?{status:c.status}:{})};});return d;
+}
+let state=defaults(),selected=null,storageAvailable=true;
+try{const stored=localStorage.getItem(STORAGE);if(stored)state=validate(JSON.parse(stored));}catch{storageAvailable=false;}
+const $=id=>document.getElementById(id),t=key=>copy[key][state.language==='en'?1:0];
+function notice(message){$('notice').textContent=message;}
+function save(){try{localStorage.setItem(STORAGE,JSON.stringify(state));storageAvailable=true;}catch{storageAvailable=false;notice(t('unsaved'));}}
+function svg(id){return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-${id}"></use></svg>`;}
+function picture(){return '<svg class="preview-image" viewBox="0 0 400 240" aria-label="Dummy image"><use href="#picture"></use></svg>';}
+function makeRange(key,parent){const [min,max,step]=specs[key];const label=document.createElement('label');label.className='control';label.innerHTML=`<span><span data-ui="${key}"></span><output id="${key}-value"></output></span><input id="${key}" type="range" min="${min}" max="${max}" step="${step}">`;parent.append(label);$(key).addEventListener('input',()=>{state[key]=Number($(key).value);apply();save();});}
+for(const key of ['offset','gap','padding','iconSize'])makeRange(key,$('pill-controls'));
+for(const key of ['width','height','titleSize','titleLines','tracking'])makeRange(key,$('card-controls'));
+for(const key of actions){const label=document.createElement('label');label.innerHTML=`<input type="checkbox" id="action-${key}"><span data-ui="${key}"></span>`;$('function-controls').append(label);$('action-'+key).addEventListener('change',()=>{state.actions=actions.filter(action=>$('action-'+action).checked);renderCards();save();});}
+function apply(){
+ document.documentElement.dataset.skin=state.skin;document.documentElement.dataset.theme=state.mode;document.documentElement.lang=state.language;
+ for(const el of document.querySelectorAll('[data-ui]'))el.textContent=t(el.dataset.ui);
+ for(const key of ['skin','mode','language','radius','visibility','zoom'])$(key).value=state[key];
+ for(const key of ['constant','area'])$(key).checked=state[key];
+ for(const key of actions)$('action-'+key).checked=state.actions.includes(key);
+ for(const [key,[,,,unit]] of Object.entries(specs)){$(key).value=state[key];$(key+'-value').textContent=state[key]+unit;}
+ const camera=.35+(state.zoom-1)/99*.4;
+ const css={'--card-width':state.width+'px','--card-height':state.height+'px','--card-radius':'var(--radius-lg)','--title-size':state.titleSize+'px','--title-lines':state.titleLines,'--tracking':state.tracking+'px','--pill-offset':state.offset+'px','--pill-gap':state.gap+'px','--pill-padding':state.padding+'px','--icon-size':state.iconSize+'px','--pill-radius':state.radius==='round'?'999px':state.radius==='square'?'0px':state.skin==='office'?'0px':state.skin==='clay'?'var(--radius-lg)':'var(--radius-control)','--pill-scale':state.constant?1/camera:1};
+ for(const [key,value] of Object.entries(css))$('world').style.setProperty(key,value);
+ $('world').style.transform=`scale(${camera})`;document.querySelector('.extent').style.width=1280*camera+'px';document.querySelector('.extent').style.height=860*camera+'px';
+ $('revision-readout').textContent=t('revision')+' · '+PREVIEW_REVISION;$('zoom-value').textContent=state.zoom+'%';$('zoom-readout').textContent=state.zoom+'% · '+(state.language==='de'?'Desk-Zoom':'Desk zoom');
+ renderCards();selectionControls();
+}
+function renderCards(){
+ const world=$('world');world.replaceChildren();
+ if(state.area){const area=document.createElement('div');area.className='area';const label=document.createElement('span');label.className='area-label';label.textContent=t('research');area.append(label);world.append(area);}
+ for(const card of state.cards){
+  const node=document.createElement('article');node.className='node'+(selected===card.id?' selected':'');node.dataset.id=card.id;node.dataset.kind=card.kind;node.dataset.pillVisibility=state.visibility;node.tabIndex=0;node.setAttribute('aria-label',card.title);node.style.left=card.x+'px';node.style.top=card.y+'px';
+  if(card.kind==='stack')for(const extra of ['', ' second']){const page=document.createElement('div');page.className='stack-back'+extra;node.append(page);}
+  const surface=document.createElement('div');surface.className='surface';
+  const title=document.createElement('div');title.className='title';title.textContent=card.title;title.title=card.title;
+  if(['file','stack'].includes(card.kind)){const thumb=document.createElement('div');thumb.className='thumbnail';thumb.innerHTML=picture();const caption=document.createElement('div');caption.className='file-title';caption.append(title);surface.append(thumb,caption);if(card.kind==='stack'){const count=document.createElement('span');count.className='stack-count';count.textContent='4';surface.append(count);}}
+  else{if(card.kind==='tunnel'){const logo=document.createElement('span');logo.className='tunnel-logo';logo.innerHTML=svg('drive');surface.append(logo);}surface.append(title);}
+  node.append(surface);const anchor=document.createElement('div');anchor.className='pill-anchor';const pill=document.createElement('div');pill.className='pill';pill.setAttribute('aria-label',t('pill'));
+  for(const key of state.actions){
+   if(key==='status'&&card.kind!=='task'||key==='preview'&&!['file','stack','tunnel'].includes(card.kind))continue;
+   const btn=document.createElement('button');btn.type='button';btn.dataset.action=key;btn.setAttribute('aria-label',t(key));btn.className=key;
+   if(key==='status'){btn.classList.toggle('done',card.status==='done');btn.innerHTML=card.status==='done'?svg('check'):'<span aria-hidden="true">○</span>';const text=document.createElement('span');text.textContent=t(card.status);btn.append(text);}
+   else btn.innerHTML=svg(icons[key]);
+   const tooltip=document.createElement('span');tooltip.className='tooltip';tooltip.textContent=t(key);btn.append(tooltip);btn.addEventListener('click',()=>action(card,key));pill.append(btn);
+  }
+  if(card.kind==='desk'){const btn=document.createElement('button');btn.type='button';btn.setAttribute('aria-label',t('desk'));btn.innerHTML=svg('open');btn.onclick=()=>action(card,'desk');pill.append(btn);}
+  if(pill.children.length){anchor.append(pill);node.append(anchor);}world.append(node);
+  node.addEventListener('pointerdown',event=>startDrag(event,node,card));node.addEventListener('keydown',event=>{if(event.target!==node)return;if(event.key==='Enter'||event.key===' '){event.preventDefault();choose(card.id);}});
+ }
+}
+function choose(id){selected=id;for(const node of document.querySelectorAll('.node'))node.classList.toggle('selected',node.dataset.id===id);selectionControls();}
+function selectionControls(){const card=state.cards.find(c=>c.id===selected);$('selection-hint').hidden=!!card;$('selection-controls').hidden=!card;if(!card)return;$('title').value=card.title;$('note').value=card.note;$('task-state').closest('label').hidden=card.kind!=='task';$('task-state').value=card.status||'open';}
+function startDrag(event,node,card){
+ if(event.target.closest('button')||event.button!==0)return;
+ choose(card.id);event.preventDefault();node.setPointerCapture(event.pointerId);node.classList.add('dragging');
+ const camera=.35+(state.zoom-1)/99*.4,start={x:event.clientX,y:event.clientY,cx:card.x,cy:card.y};
+ const move=e=>{card.x=Math.round(Math.max(0,Math.min(1280-state.width,start.cx+(e.clientX-start.x)/camera)));card.y=Math.round(Math.max(0,Math.min(860-state.height-60,start.cy+(e.clientY-start.y)/camera)));node.style.left=card.x+'px';node.style.top=card.y+'px';};
+ const end=()=>{node.classList.remove('dragging');node.removeEventListener('pointermove',move);node.removeEventListener('pointerup',end);node.removeEventListener('pointercancel',end);node.removeEventListener('lostpointercapture',end);save();};
+ node.addEventListener('pointermove',move);node.addEventListener('pointerup',end);node.addEventListener('pointercancel',end);node.addEventListener('lostpointercapture',end);
+}
+function action(card,key){
+ choose(card.id);
+ if(key==='status'){card.status=card.status==='done'?'open':'done';renderCards();selectionControls();save();return;}
+ const content=$('modal-content');content.replaceChildren();$('modal-title').textContent=key==='desk'?t('desk'):t(key);
+ if(key==='preview')content.innerHTML=picture();
+ const text=document.createElement('p');text.textContent=key==='chat'?t('demoChat'):key==='links'?t('demoLinks'):key==='calendar'?t('demoCalendar'):key==='menu'?t('demoMenu'):key==='desk'?t('demoDesk'):key==='creator'?'Alex · AI Worker':key==='checklist'?'2 / 5':(card.note||t('empty'));content.append(text);if(!$('modal').open)$('modal').showModal();
+}
+for(const key of ['skin','mode','language','visibility','radius'])$(key).addEventListener('change',()=>{state[key]=$(key).value;apply();save();});
+for(const key of ['constant','area'])$(key).addEventListener('change',()=>{state[key]=$(key).checked;apply();save();});
+$('zoom').addEventListener('input',()=>{state.zoom=Number($('zoom').value);apply();save();});
+for(const key of ['title','note'])$(key).addEventListener('input',()=>{const card=state.cards.find(c=>c.id===selected);if(!card)return;card[key]=$(key).value;renderCards();save();});
+$('task-state').addEventListener('change',()=>{const card=state.cards.find(c=>c.id===selected);if(card?.kind==='task'){card.status=$('task-state').value;renderCards();save();}});
+$('close-modal').onclick=()=>$('modal').close();$('modal').addEventListener('click',event=>{if(event.target!==$('modal'))return;const r=$('modal').getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)$('modal').close();});
+$('export').onclick=()=>{const blob=new Blob([JSON.stringify(state,null,2)+'\n'],{type:'application/json'});const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='taikujo-canvas-design.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);notice(t('saved'));};
+$('import').onclick=()=>$('import-file').click();$('import-file').onchange=async()=>{const file=$('import-file').files[0];if(!file)return;try{if(file.size>100000)throw Error('size');const candidate=validate(JSON.parse(await file.text()));state=candidate;selected=null;apply();save();notice(t('loaded'));}catch{notice(t('invalid'));}finally{$('import-file').value='';}};
+$('reset').onclick=()=>{state=defaults();selected=null;apply();save();notice('');};
+apply();if(!storageAvailable)notice(t('unsaved'));
+</script>
+</body>
+</html>
